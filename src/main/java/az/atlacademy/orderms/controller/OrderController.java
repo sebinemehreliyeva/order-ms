@@ -1,46 +1,29 @@
 package az.atlacademy.orderms.controller;
 
-import az.atlacademy.orderms.entity.Order;
+import az.atlacademy.orderms.model.request.OrderProductDto;
+import az.atlacademy.orderms.model.response.OrderResponseDto;
 import az.atlacademy.orderms.service.OrderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("api/v1/orders")
+@RequiredArgsConstructor
 public class OrderController {
-
-    @Autowired
-    private OrderService orderService;
-
-    @PostMapping
-    public Order createOrder(@RequestBody Order order) {
-        return orderService.createOrder(order);
-    }
+    private final OrderService orderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
-        Optional<Order> order = orderService.getOrderById(id);
-        return order.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.status(OK).body(orderService.getOrderById(id));
     }
 
-    @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
-    }
-
-    @PutMapping("/{id}")
-    public Order updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        return orderService.updateOrder(id, order);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteOrder(@PathVariable Long id) {
-        orderService.deleteOrder(id);
+    @PostMapping
+    public ResponseEntity<Void> oderProduct(@Valid @RequestBody OrderProductDto dto) {
+        orderService.oderProduct(dto);
+        return ResponseEntity.status(OK).build();
     }
 }
-
-

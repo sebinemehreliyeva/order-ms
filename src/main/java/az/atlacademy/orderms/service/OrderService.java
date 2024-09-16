@@ -1,16 +1,12 @@
 package az.atlacademy.orderms.service;
 
-import az.atlacademy.orderms.entity.Order;
+import az.atlacademy.orderms.model.request.OrderProductDto;
+import az.atlacademy.orderms.model.response.OrderResponseDto;
 
-import java.util.List;
-import java.util.Optional;
 
 public interface OrderService {
-    Order createOrder(Order order);
-    Optional<Order> getOrderById(Long id);
-    List<Order> getAllOrders();
-    Order updateOrder(Long id, Order order);
-    void deleteOrder(Long id);
-}
+    OrderResponseDto getOrderById (Long id);
 
+    void oderProduct(OrderProductDto dto);
+}
 
